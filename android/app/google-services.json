@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282748163638",
+    "project_id": "politica-ai-election",
+    "storage_bucket": "politica-ai-election.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282748163638:android:fd38e9518e9faf99d66a97",
+        "android_client_info": {
+          "package_name": "com.example.election"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9yqYo3CrnxaGAkS6us3xnTRHKunU8b2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
