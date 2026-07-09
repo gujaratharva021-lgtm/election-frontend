@@ -31,7 +31,7 @@ dependencies:
 
   # Icons
   flutter_svg: ^2.0.10+1
-  font_awesome_flutter: ^10.7.0
+  font_awesome_flutter: ^11.0.0
 
   # Storage
   shared_preferences: ^2.2.3

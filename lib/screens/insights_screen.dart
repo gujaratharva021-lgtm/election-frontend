@@ -45,7 +45,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
     }
   }
 
-  IconData _getIcon(String type) {
+  FaIconData _getIcon(String type) {
     switch (type) {
       case 'strength': return FontAwesomeIcons.chartLine;
       case 'opportunity': return FontAwesomeIcons.lightbulb;

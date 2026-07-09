@@ -240,7 +240,7 @@ import 'analytics_screen.dart';
       );
     }
   
-    Widget _statCard({required String title, required String value, required String subtitle, required IconData icon, required Color color, required Color card, required Color border, required Color textMuted, required Color textPrimary}) {
+    Widget _statCard({required String title, required String value, required String subtitle, required FaIconData icon, required Color color, required Color card, required Color border, required Color textMuted, required Color textPrimary}) {
       return Expanded(
         child: Container(
           padding: const EdgeInsets.all(16),

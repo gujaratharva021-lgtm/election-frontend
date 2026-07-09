@@ -106,7 +106,7 @@
   }
 
   class _NavItem {
-    final IconData icon;
+    final FaIconData icon;
     final String label;
     _NavItem({required this.icon, required this.label});
   }

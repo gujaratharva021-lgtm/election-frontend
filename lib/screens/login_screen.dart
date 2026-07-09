@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: const Icon(FontAwesomeIcons.bolt,
+                    child: const FaIcon(FontAwesomeIcons.bolt,
                         color: Colors.white, size: 22),
                   ),
                   const SizedBox(width: 12),

@@ -209,7 +209,7 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
     );
   }
 
-  Widget _statCard(String title, String value, IconData icon, Color color,
+  Widget _statCard(String title, String value, FaIconData icon, Color color,
       Color cardColor, Color borderColor) {
     return Expanded(
       child: Container(

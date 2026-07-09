@@ -225,7 +225,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _switchCard({
-    required IconData icon,
+    required FaIconData icon,
     required String title,
     required String subtitle,
     required bool value,
