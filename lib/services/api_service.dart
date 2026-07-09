@@ -132,4 +132,14 @@ class ApiService {
     );
     return jsonDecode(response.body);
   }
+
+  static Future<Map<String, dynamic>> getResultsCount({
+    int year = 2024,
+    String state = 'Maharashtra',
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/results/count?year=$year&state=$state'),
+    );
+    return jsonDecode(response.body);
+  }
 }

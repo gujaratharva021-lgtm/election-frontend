@@ -36,7 +36,7 @@ import 'analytics_screen.dart';
       setState(() => _loading = true);
       try {
         final responses = await Future.wait([
-          ApiService.getResults(year: _selectedYear, state: _selectedState),
+          ApiService.getResultsCount(year: _selectedYear, state: _selectedState),
           ApiService.getWinners(year: _selectedYear, state: _selectedState),
           ApiService.getPartySummary(year: _selectedYear, state: _selectedState, type: 'AC'),
           ApiService.getVoteTrends(state: _selectedState),
