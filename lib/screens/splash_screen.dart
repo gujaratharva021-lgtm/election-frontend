@@ -212,7 +212,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Column(
                     children: [
                       const Text(
-                        'Election Data',
+                        'OneVote',
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 34,
@@ -226,7 +226,7 @@ class _SplashScreenState extends State<SplashScreen>
                           colors: [AppColors.accent, AppColors.primary],
                         ).createShader(bounds),
                         child: const Text(
-                          'Maharashtra Election Intelligence',
+                          'OneVote',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 13,

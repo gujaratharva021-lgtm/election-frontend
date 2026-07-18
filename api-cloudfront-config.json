@@ -1,0 +1,37 @@
+{
+  "CallerReference": "election-api-cf-001",
+  "Comment": "Election Backend API HTTPS proxy",
+  "Enabled": true,
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "election-api-origin",
+        "DomainName": "ec2-43-204-28-42.ap-south-1.compute.amazonaws.com",
+        "CustomOriginConfig": {
+          "HTTPPort": 5000,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "http-only",
+          "OriginSslProtocols": { "Quantity": 1, "Items": ["TLSv1.2"] }
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "election-api-origin",
+    "ViewerProtocolPolicy": "https-only",
+    "AllowedMethods": {
+      "Quantity": 7,
+      "Items": ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"],
+      "CachedMethods": { "Quantity": 2, "Items": ["GET", "HEAD"] }
+    },
+    "ForwardedValues": {
+      "QueryString": true,
+      "Headers": { "Quantity": 1, "Items": ["*"] },
+      "Cookies": { "Forward": "all" }
+    },
+    "MinTTL": 0,
+    "DefaultTTL": 0,
+    "MaxTTL": 0
+  }
+}

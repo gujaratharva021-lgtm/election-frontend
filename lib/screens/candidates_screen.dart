@@ -65,7 +65,7 @@ class _CandidatesScreenState extends State<CandidatesScreen>
     try {
       final year = context.read<YearProvider>().year;
       final winnersData = await ApiService.getWinners(year: year, type: 'MLA');
-      final allData = await ApiService.getResults(year: year, state: 'Maharashtra');
+      final allData = await ApiService.getResults(year: year, state: 'Maharashtra', type: 'AC');
       final khasdarData = await ApiService.getKhasdars(year: year);
 
       final winners = winnersData['winners'] as List? ?? [];
@@ -88,6 +88,7 @@ class _CandidatesScreenState extends State<CandidatesScreen>
         _loading = false;
       });
     } catch (e) {
+      print('CANDIDATES SCREEN ERROR: $e');
       setState(() => _loading = false);
     }
   }

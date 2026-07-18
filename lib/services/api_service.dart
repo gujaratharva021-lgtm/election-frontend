@@ -3,15 +3,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'http://onebharat-env-2.eba-8m5cvcjn.ap-south-1.elasticbeanstalk.com/api/v1';
+  static const String baseUrl = 'https://d3idh2qb0hyf2s.cloudfront.net/api/v1';
 
   // ── RESULTS ──────────────────────────────────────────
   static Future<Map<String, dynamic>> getResults({
     int year = 2024,
     String state = 'Maharashtra',
+    String type = '',
   }) async {
+    final typeParam = type.isNotEmpty ? '&type=$type' : '';
     final response = await http.get(
-      Uri.parse('$baseUrl/results?year=$year&state=$state'),
+      Uri.parse('$baseUrl/results?year=$year&state=$state$typeParam'),
     );
     return jsonDecode(response.body);
   }
