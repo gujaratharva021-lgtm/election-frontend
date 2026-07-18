@@ -65,6 +65,30 @@ class AuthService {
     return prefs.getString(_keyPhone) ?? '';
   }
 
+  // Email/password sign up
+  static Future<String?> signUpWithEmail(String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return e.message ?? 'Sign up failed';
+    } catch (e) {
+      return 'Sign up failed: $e';
+    }
+  }
+
+  // Email/password sign in
+  static Future<String?> signInWithEmail(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return e.message ?? 'Login failed';
+    } catch (e) {
+      return 'Login failed: $e';
+    }
+  }
+
   // Logout
   static Future<void> logout() async {
     await _auth.signOut();

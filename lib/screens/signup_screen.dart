@@ -3,46 +3,61 @@ import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/auth_service.dart';
 import 'main_screen.dart';
-import 'signup_screen.dart';
+import 'login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmController = TextEditingController();
   bool _loading = false;
-  bool _obscure = true;
+  bool _obscure1 = true;
+  bool _obscure2 = true;
 
   static const _darkText = Color(0xFF1A1A2E);
   static const _mutedText = Color(0xFF6B7280);
   static const _blue = Color(0xFF2563EB);
 
-  void _login() async {
-    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter email and password'), backgroundColor: Colors.red),
-      );
+  void _signup() async {
+    final email = _emailController.text.trim();
+    final pass = _passwordController.text;
+    final confirm = _confirmController.text;
+
+    if (email.isEmpty || pass.isEmpty) {
+      _showError('Enter email and password');
       return;
     }
+    if (pass.length < 6) {
+      _showError('Password must be at least 6 characters');
+      return;
+    }
+    if (pass != confirm) {
+      _showError('Passwords do not match');
+      return;
+    }
+
     setState(() => _loading = true);
-    final error = await AuthService.signInWithEmail(_emailController.text.trim(), _passwordController.text);
+    final error = await AuthService.signUpWithEmail(email, pass);
     if (error == null) {
-      await AuthService.saveLogin(_emailController.text.trim());
+      await AuthService.saveLogin(email);
       setState(() => _loading = false);
       if (mounted) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainScreen()));
       }
     } else {
       setState(() => _loading = false);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error), backgroundColor: Colors.red));
-      }
+      _showError(error);
     }
+  }
+
+  void _showError(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.red));
   }
 
   @override
@@ -75,9 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
         Expanded(
           flex: 4,
           child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: _formPanel(),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: _formPanel(),
+              ),
             ),
           ),
         ),
@@ -159,9 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Welcome back', style: TextStyle(color: _darkText, fontSize: 26, fontWeight: FontWeight.w800)),
+        const Text('Create account', style: TextStyle(color: _darkText, fontSize: 26, fontWeight: FontWeight.w800)),
         const SizedBox(height: 6),
-        const Text('Sign in to continue', style: TextStyle(color: _mutedText, fontSize: 14)),
+        const Text('Sign up to get started', style: TextStyle(color: _mutedText, fontSize: 14)),
         const SizedBox(height: 28),
 
         const Text('Email', style: TextStyle(color: _darkText, fontSize: 13, fontWeight: FontWeight.w600)),
@@ -187,15 +205,38 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(height: 6),
         TextField(
           controller: _passwordController,
-          obscureText: _obscure,
+          obscureText: _obscure1,
           style: const TextStyle(color: _darkText, fontSize: 15),
           decoration: InputDecoration(
-            hintText: '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022',
+            hintText: 'Min 6 characters',
             hintStyle: const TextStyle(color: Color(0xFFAAB2C0), fontSize: 15),
             prefixIcon: const Icon(Icons.lock_outline, color: _mutedText, size: 20),
             suffixIcon: IconButton(
-              icon: Icon(_obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: _mutedText, size: 20),
-              onPressed: () => setState(() => _obscure = !_obscure),
+              icon: Icon(_obscure1 ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: _mutedText, size: 20),
+              onPressed: () => setState(() => _obscure1 = !_obscure1),
+            ),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: _blue, width: 1.5)),
+          ),
+        ),
+        const SizedBox(height: 18),
+
+        const Text('Confirm Password', style: TextStyle(color: _darkText, fontSize: 13, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 6),
+        TextField(
+          controller: _confirmController,
+          obscureText: _obscure2,
+          style: const TextStyle(color: _darkText, fontSize: 15),
+          decoration: InputDecoration(
+            hintText: 'Re-enter password',
+            hintStyle: const TextStyle(color: Color(0xFFAAB2C0), fontSize: 15),
+            prefixIcon: const Icon(Icons.lock_outline, color: _mutedText, size: 20),
+            suffixIcon: IconButton(
+              icon: Icon(_obscure2 ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: _mutedText, size: 20),
+              onPressed: () => setState(() => _obscure2 = !_obscure2),
             ),
             filled: true,
             fillColor: Colors.white,
@@ -210,11 +251,11 @@ class _LoginScreenState extends State<LoginScreen> {
           width: double.infinity,
           height: 50,
           child: ElevatedButton(
-            onPressed: _loading ? null : _login,
+            onPressed: _loading ? null : _signup,
             style: ElevatedButton.styleFrom(backgroundColor: _blue, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             child: _loading
                 ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                : const Text('Sign In', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)),
+                : const Text('Sign Up', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)),
           ),
         ),
         const SizedBox(height: 20),
@@ -223,13 +264,13 @@ class _LoginScreenState extends State<LoginScreen> {
             text: TextSpan(
               style: const TextStyle(color: _mutedText, fontSize: 14),
               children: [
-                const TextSpan(text: "Don't have an account? "),
+                const TextSpan(text: 'Already have an account? '),
                 TextSpan(
-                  text: 'Sign up',
+                  text: 'Sign in',
                   style: const TextStyle(color: _blue, fontWeight: FontWeight.w700),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SignupScreen()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
                     },
                 ),
               ],
