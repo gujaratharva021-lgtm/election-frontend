@@ -28,28 +28,32 @@ class YearProvider extends ChangeNotifier {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    print('Firebase init failed: $e');
+  }
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => YearProvider()),
       ],
-      child: const ElectionAIApp(),
+      child: const OneVoteApp(),
     ),
   );
 }
 
-class ElectionAIApp extends StatelessWidget {
-  const ElectionAIApp({super.key});
+class OneVoteApp extends StatelessWidget {
+  const OneVoteApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     return MaterialApp(
-      title: 'POLITICA AI',
+      title: 'OneVote',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

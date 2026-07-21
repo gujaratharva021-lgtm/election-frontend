@@ -4,6 +4,8 @@ import '../theme/app_theme.dart';
 import 'main_screen.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import '../services/auth_service.dart';
+import 'login_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -191,6 +193,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 color: textPrimary,
                                 fontSize: 13)),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Logout
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: OutlinedButton.icon(
+                      onPressed: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Log out?'),
+                            content: const Text('You will need to verify your phone number again to log back in.'),
+                            actions: [
+                              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx, true),
+                                child: const Text('Log out', style: TextStyle(color: AppColors.accentRed)),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (confirm == true) {
+                          await AuthService.logout();
+                          if (context.mounted) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (_) => const LoginScreen()),
+                              (route) => false,
+                            );
+                          }
+                        }
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.rightFromBracket, size: 16, color: AppColors.accentRed),
+                      label: const Text('Log out', style: TextStyle(color: AppColors.accentRed, fontWeight: FontWeight.w600)),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: AppColors.accentRed),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 30),

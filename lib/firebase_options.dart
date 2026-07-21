@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -56,7 +53,6 @@ class DefaultFirebaseOptions {
     projectId: 'politica-ai-election',
     storageBucket: 'politica-ai-election.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBRwtZHE9CXX2WnP6mrHfpevLB1z_Svx-c',
     appId: '1:282748163638:ios:48675ddab96a3fd9d66a97',
@@ -64,5 +60,14 @@ class DefaultFirebaseOptions {
     projectId: 'politica-ai-election',
     storageBucket: 'politica-ai-election.firebasestorage.app',
     iosBundleId: 'com.example.election',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCknrj0CL3vgjxDZ_BCTYdfvnRYQ9FLlao',
+    appId: '1:282748163638:web:6d61d814de5881bed66a97',
+    messagingSenderId: '282748163638',
+    projectId: 'politica-ai-election',
+    authDomain: 'politica-ai-election.firebaseapp.com',
+    storageBucket: 'politica-ai-election.firebasestorage.app',
   );
 }
