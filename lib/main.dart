@@ -1,5 +1,7 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'theme/app_theme.dart';
@@ -9,7 +11,6 @@ import 'screens/splash_screen.dart';
 class ThemeProvider extends ChangeNotifier {
   bool _isDark = true;
   bool get isDark => _isDark;
-
   void toggle() {
     _isDark = !_isDark;
     notifyListeners();
@@ -19,7 +20,6 @@ class ThemeProvider extends ChangeNotifier {
 class YearProvider extends ChangeNotifier {
   int _year = 2024;
   int get year => _year;
-
   void setYear(int year) {
     _year = year;
     notifyListeners();
@@ -32,6 +32,15 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    FlutterError.onError = (errorDetails) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
   } catch (e) {
     print('Firebase init failed: $e');
   }
@@ -48,7 +57,6 @@ void main() async {
 
 class OneVoteApp extends StatelessWidget {
   const OneVoteApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
